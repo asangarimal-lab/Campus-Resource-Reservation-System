@@ -38,7 +38,7 @@ Please commit from your own GitHub account. When your part is done, push the
 branch and open a Pull Request into `main`. Do not email finished files for
 someone else to upload.
 
-## What is in this branch right now (Person B)
+## What is in this branch right now (Asanga)
 
 - `Reservation.h` / `Reservation.cpp`
 - `ReservationManager.h` / `ReservationManager.cpp`
