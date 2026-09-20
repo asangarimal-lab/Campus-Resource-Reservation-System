@@ -1,24 +1,31 @@
 #include "ReservationManager.h"
-#include <fstream>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 using namespace std;
 
-ReservationManager::ReservationManager()
-    : head(NULL), tail(NULL), reservationCount(0), nextId(301) {
+ReservationManager::ReservationManager() {
+    head = NULL;
+    tail = NULL;
+    reservationCount = 0;
+    nextId = 301;
 }
 
 ReservationManager::~ReservationManager() {
     clear();
 }
 
-void ReservationManager::insertNode(const Reservation& reservation) {
-    Node* node = new Node(reservation);
+// add at the end of the list
+void ReservationManager::insertNode(Reservation reservation) {
+    Node* node = new Node;
+    node->data = reservation;
+    node->next = NULL;
 
     if (head == NULL) {
         head = node;
         tail = node;
-    } else {
+    }
+    else {
         tail->next = node;
         tail = node;
     }
@@ -29,11 +36,12 @@ void ReservationManager::insertNode(const Reservation& reservation) {
     }
 }
 
-void ReservationManager::insertReservation(const Reservation& reservation) {
+void ReservationManager::insertReservation(Reservation reservation) {
     insertNode(reservation);
 }
 
-bool ReservationManager::removeReservation(int reservationId, Reservation& removedReservation) {
+// find the node with this id and take it out
+bool ReservationManager::removeReservation(int reservationId, Reservation& removed) {
     if (head == NULL) {
         return false;
     }
@@ -47,14 +55,15 @@ bool ReservationManager::removeReservation(int reservationId, Reservation& remov
     }
 
     if (current == NULL) {
-        return false;
+        return false; // not in the list
     }
 
-    removedReservation = current->data;
+    removed = current->data;
 
     if (previous == NULL) {
         head = current->next;
-    } else {
+    }
+    else {
         previous->next = current->next;
     }
 
@@ -67,8 +76,8 @@ bool ReservationManager::removeReservation(int reservationId, Reservation& remov
     return true;
 }
 
-bool ReservationManager::isValidDate(const string& date) const {
-    // Expected format: MM/DD/YYYY
+// pretty simple date check, just MM/DD/YYYY
+bool ReservationManager::checkDate(string date) {
     if (date.length() != 10) {
         return false;
     }
@@ -76,115 +85,97 @@ bool ReservationManager::isValidDate(const string& date) const {
         return false;
     }
 
-    for (int i = 0; i < 10; i++) {
-        if (i == 2 || i == 5) {
-            continue;
-        }
-        if (date[i] < '0' || date[i] > '9') {
-            return false;
-        }
-    }
-
     int month = (date[0] - '0') * 10 + (date[1] - '0');
     int day = (date[3] - '0') * 10 + (date[4] - '0');
-    int year = (date[6] - '0') * 1000 + (date[7] - '0') * 100
-             + (date[8] - '0') * 10 + (date[9] - '0');
+    int year = (date[6] - '0') * 1000 + (date[7] - '0') * 100 +
+               (date[8] - '0') * 10 + (date[9] - '0');
 
-    if (year < 2020 || year > 2100) {
-        return false;
-    }
     if (month < 1 || month > 12) {
         return false;
     }
-
-    int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    bool leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-    if (leap) {
-        daysInMonth[2] = 29;
+    if (day < 1 || day > 31) {
+        return false;
     }
-
-    if (day < 1 || day > daysInMonth[month]) {
+    if (year < 2020) {
         return false;
     }
     return true;
 }
 
-bool ReservationManager::validateBasicFields(const Reservation& reservation,
-                                             string& errorMessage) const {
+bool ReservationManager::checkFields(Reservation reservation, string& errorMessage) {
     if (reservation.getReservationId() <= 0) {
-        errorMessage = "Reservation ID must be a positive number.";
+        errorMessage = "Reservation ID has to be positive.";
         return false;
     }
     if (reservation.getStudentId() <= 0) {
-        errorMessage = "Student ID must be a positive number.";
+        errorMessage = "Student ID has to be positive.";
         return false;
     }
-    if (reservation.getStudentName().empty()) {
-        errorMessage = "Student name cannot be empty.";
+    if (reservation.getStudentName() == "") {
+        errorMessage = "Need a student name.";
         return false;
     }
-    if (reservation.getResourceId().empty()) {
-        errorMessage = "Resource ID cannot be empty.";
+    if (reservation.getResourceId() == "") {
+        errorMessage = "Need a resource ID.";
         return false;
     }
-    if (!isValidDate(reservation.getDate())) {
-        errorMessage = "Date must be a real date in MM/DD/YYYY format.";
+    if (!checkDate(reservation.getDate())) {
+        errorMessage = "Date should look like MM/DD/YYYY.";
         return false;
     }
     return true;
 }
 
-bool ReservationManager::loadReservationsFromFile(const string& fileName,
-                                                  string& errorMessage) {
+bool ReservationManager::loadFromFile(string fileName, string& errorMessage) {
     ifstream inFile(fileName.c_str());
-    if (!inFile.is_open()) {
-        errorMessage = "Could not open reservation file: " + fileName;
+    if (!inFile) {
+        errorMessage = "Couldn't open " + fileName;
         return false;
     }
 
     clear();
+
     string line;
-    int lineNumber = 0;
-
     while (getline(inFile, line)) {
-        lineNumber++;
-        if (line.empty()) {
+        if (line == "") {
             continue;
         }
 
+        // format: id|studentId|name|resourceId|date
         stringstream ss(line);
-        string idText, studentIdText, name, resourceId, date;
+        string idText, studentText, name, resourceId, date;
 
-        if (!getline(ss, idText, '|') || !getline(ss, studentIdText, '|') ||
-            !getline(ss, name, '|') || !getline(ss, resourceId, '|') ||
-            !getline(ss, date, '|')) {
-            cout << "Skipping bad reservation line " << lineNumber << endl;
-            continue;
-        }
+        getline(ss, idText, '|');
+        getline(ss, studentText, '|');
+        getline(ss, name, '|');
+        getline(ss, resourceId, '|');
+        getline(ss, date, '|');
 
-        int reservationId = 0;
-        int studentId = 0;
-        stringstream idStream(idText);
-        stringstream studentStream(studentIdText);
-        idStream >> reservationId;
-        studentStream >> studentId;
+        int reservationId;
+        int studentId;
+        stringstream(idText) >> reservationId;
+        stringstream(studentText) >> studentId;
 
-        insertNode(Reservation(reservationId, studentId, name, resourceId, date));
+        Reservation temp(reservationId, studentId, name, resourceId, date);
+        insertNode(temp);
     }
 
     inFile.close();
     return true;
 }
 
-bool ReservationManager::createReservation(const Reservation& reservation,
-                                           string& errorMessage) {
-    if (!validateBasicFields(reservation, errorMessage)) {
+bool ReservationManager::createReservation(Reservation reservation, string& errorMessage) {
+    if (!checkFields(reservation, errorMessage)) {
         return false;
     }
+
+    // no duplicate ids
     if (reservationIdExists(reservation.getReservationId())) {
-        errorMessage = "That reservation ID is already in use.";
+        errorMessage = "That reservation ID is already used.";
         return false;
     }
+
+    // same resource can't be booked twice on the same day
     if (isResourceReservedOnDate(reservation.getResourceId(), reservation.getDate())) {
         errorMessage = "That resource is already reserved on this date.";
         return false;
@@ -194,16 +185,14 @@ bool ReservationManager::createReservation(const Reservation& reservation,
     return true;
 }
 
-bool ReservationManager::cancelReservation(int reservationId,
-                                           Reservation& cancelledReservation,
-                                           string& message) {
+bool ReservationManager::cancelReservation(int reservationId, Reservation& cancelled, string& message) {
     if (head == NULL) {
-        message = "There are no active reservations.";
+        message = "There are no reservations right now.";
         return false;
     }
 
-    if (!removeReservation(reservationId, cancelledReservation)) {
-        message = "No reservation found with that ID.";
+    if (!removeReservation(reservationId, cancelled)) {
+        message = "Couldn't find that reservation ID.";
         return false;
     }
 
@@ -211,17 +200,18 @@ bool ReservationManager::cancelReservation(int reservationId,
     return true;
 }
 
-bool ReservationManager::restoreReservation(const Reservation& reservation,
-                                            string& errorMessage) {
+bool ReservationManager::restoreReservation(Reservation reservation, string& errorMessage) {
     return createReservation(reservation, errorMessage);
 }
 
-bool ReservationManager::reservationIdExists(int reservationId) const {
-    return findReservation(reservationId) != NULL;
+bool ReservationManager::reservationIdExists(int reservationId) {
+    if (findReservation(reservationId) == NULL) {
+        return false;
+    }
+    return true;
 }
 
-bool ReservationManager::isResourceReservedOnDate(const string& resourceId,
-                                                  const string& date) const {
+bool ReservationManager::isResourceReservedOnDate(string resourceId, string date) {
     Node* current = head;
     while (current != NULL) {
         if (current->data.getResourceId() == resourceId &&
@@ -233,7 +223,7 @@ bool ReservationManager::isResourceReservedOnDate(const string& resourceId,
     return false;
 }
 
-const Reservation* ReservationManager::findReservation(int reservationId) const {
+Reservation* ReservationManager::findReservation(int reservationId) {
     Node* current = head;
     while (current != NULL) {
         if (current->data.getReservationId() == reservationId) {
@@ -244,35 +234,35 @@ const Reservation* ReservationManager::findReservation(int reservationId) const 
     return NULL;
 }
 
-void ReservationManager::displayActiveReservations() const {
+void ReservationManager::displayActiveReservations() {
     if (head == NULL) {
         cout << "No active reservations." << endl;
         return;
     }
 
-    cout << endl << "----- Active Reservations -----" << endl;
+    cout << "----- Active Reservations -----" << endl;
     Node* current = head;
     while (current != NULL) {
         current->data.display();
         current = current->next;
     }
-    cout << "Total active reservations: " << reservationCount << endl;
+    cout << "Total: " << reservationCount << endl;
 }
 
-size_t ReservationManager::getReservationCount() const {
+int ReservationManager::getReservationCount() {
     return reservationCount;
 }
 
-int ReservationManager::getNextReservationId() const {
+int ReservationManager::getNextReservationId() {
     return nextId;
 }
 
 void ReservationManager::clear() {
     Node* current = head;
     while (current != NULL) {
-        Node* nextNode = current->next;
+        Node* temp = current->next;
         delete current;
-        current = nextNode;
+        current = temp;
     }
     head = NULL;
     tail = NULL;

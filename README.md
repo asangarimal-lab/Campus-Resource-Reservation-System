@@ -54,8 +54,8 @@ undo.
 After Person A merges, `main` should call:
 
 ```cpp
-bool resourceExists(const std::string& resourceId) const;
-bool isResourceAvailable(const std::string& resourceId) const;
+bool resourceExists(string resourceId);
+bool isResourceAvailable(string resourceId);
 ```
 
 before creating a new reservation. If the resource is not available, Person C

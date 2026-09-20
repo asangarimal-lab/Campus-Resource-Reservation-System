@@ -1,84 +1,57 @@
 # Complexity Analysis
 
-Campus Resource Reservation System — Milestone 1
+Milestone 1 - Campus Resource Reservation System
 
-n = number of active reservations in the linked list
-w = number of students waiting for one resource
-r = number of resources
-
----
+n = how many reservations are in the linked list
+w = how many people are waiting
+r = how many resources we have
 
 ## Reservation insertion
+Asanga Rimal
 
-Author: Asanga Rimal (Person B)
+I stored the active reservations in a linked list with a head and a tail.
 
-Active reservations are stored in a singly linked list with both a head pointer
-and a tail pointer.
+Adding a node at the tail is O(1) because I already have a pointer to the last
+node, so I don't have to walk the whole list just to insert.
 
-Inserting a new node at the tail does not require walking the list, so the
-insert itself is O(1).
+When we create a reservation I still have to look through the list to see if
+the ID is already used and if that resource is already booked on that date.
+Those checks are O(n).
 
-Before a new reservation is accepted we still have to:
+So insert by itself is O(1), but createReservation is O(n) overall.
 
-1. Make sure the reservation ID is not already in the list. That is a linear
-   search, O(n).
-2. Make sure the same resource is not already reserved on that date. That is
-   also a walk down the list, O(n).
-
-So the linked-list insert is O(1), but the full create-reservation function is
-O(n) because of the checks.
-
-Using a tail pointer is still useful. Without it, even the insert would be O(n)
-because we would have to find the last node every time.
-
----
+If I didn't keep a tail pointer, insert would also be O(n) because I would
+have to find the end every time.
 
 ## Reservation removal
+Asanga Rimal
 
-Author: Asanga Rimal (Person B)
+To cancel, I start at head and keep going until I find the matching ID.
+Worst case I look at every node, so that's O(n).
 
-To cancel a reservation we start at the head and move forward until the
-reservation ID matches. In the worst case the node is at the end, or it is not
-in the list at all, so the search is O(n).
+After I find it, taking the node out and deleting it is O(1). If it was the
+last node I also move the tail pointer.
 
-Unlinking the node and deleting it is O(1) after we have found it. We also
-update the tail pointer if the last node was removed.
-
-Overall cancel/remove is O(n).
-
-This is normal for a singly linked list when we search by ID. The list is still
-a good fit because reservations are added and removed often, and we do not need
-random access by index.
-
----
+So cancel/remove is O(n) total. That's pretty normal for a linked list when
+you search by ID. I still used a list because we add and delete reservations
+a lot.
 
 ## Waiting-list processing
+Anugrah Lama
 
-Author: Anugrah Lama (Person C)
+(Anugrah fill this in)
 
-Please complete this section on `feature/queue-stack` and replace these notes
-with your own write-up.
-
-Suggested points to cover:
-
-- enqueue (add student): O(1) if the queue keeps a rear pointer
-- dequeue (serve the next student): O(1) if the queue keeps a front pointer
-- display waiting list: O(w)
-- why a queue is the right structure (FIFO / first come, first served)
-
----
+- add to queue: O(1) if you keep a rear pointer
+- take the next person off: O(1) if you keep a front pointer
+- print the list: O(w)
+- queue makes sense because it's first come first served
 
 ## Undo cancellation
+Anugrah Lama
 
-Author: Anugrah Lama (Person C)
+(Anugrah fill this in)
 
-Please complete this section on `feature/queue-stack` and replace these notes
-with your own write-up.
-
-Suggested points to cover:
-
-- push cancelled reservation onto the stack: O(1)
-- pop the most recent cancellation: O(1)
-- restore that reservation into the linked list: uses Person B's restore,
-  which is O(n) because of the same ID/date checks
-- why a stack is the right structure (LIFO / only the most recent undo)
+- push onto the stack: O(1)
+- pop the last cancel: O(1)
+- putting it back in my list uses restoreReservation which is O(n)
+- stack makes sense because we can only undo the most recent cancel
