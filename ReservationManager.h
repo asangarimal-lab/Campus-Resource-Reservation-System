@@ -3,9 +3,9 @@
 
 #include "Reservation.h"
 #include <cstddef>
+#include <string>
 
-// Stores active reservations in a custom singly linked list.
-// std::list is not used because the assignment asks us to build the list ourselves.
+// Manages active reservations with a custom singly linked list.
 class ReservationManager {
 private:
     struct Node {
@@ -17,11 +17,15 @@ private:
         }
     };
 
-    Node* head; // first reservation in the list
-    Node* tail; // last reservation, so we can insert at the end quickly
+    Node* head;
+    Node* tail;
     std::size_t reservationCount;
+    int nextId;
 
     void insertNode(const Reservation& reservation);
+    bool validateBasicFields(const Reservation& reservation,
+                             std::string& errorMessage) const;
+    bool isValidDate(const std::string& date) const;
 
 public:
     ReservationManager();
@@ -30,11 +34,36 @@ public:
     ReservationManager(const ReservationManager&) = delete;
     ReservationManager& operator=(const ReservationManager&) = delete;
 
-    // Linked list operations
+    // Loads seed data: reservationId|studentId|studentName|resourceId|MM/DD/YYYY
+    bool loadReservationsFromFile(const std::string& fileName,
+                                  std::string& errorMessage);
+
+    // Checks IDs, date format, duplicate reservation IDs, and date conflicts.
+    // Person A's resourceExists / isResourceAvailable should be checked in main
+    // before calling this, once those functions are merged.
+    bool createReservation(const Reservation& reservation,
+                           std::string& errorMessage);
+
+    // Removes the reservation from the linked list.
+    // The cancelled record is copied out so Person C can push it onto the stack.
+    bool cancelReservation(int reservationId,
+                           Reservation& cancelledReservation,
+                           std::string& message);
+
+    // Puts a cancelled reservation back into the list (used by Person C's undo).
+    bool restoreReservation(const Reservation& reservation,
+                            std::string& errorMessage);
+
+    bool reservationIdExists(int reservationId) const;
+    bool isResourceReservedOnDate(const std::string& resourceId,
+                                  const std::string& date) const;
+    const Reservation* findReservation(int reservationId) const;
+
     void insertReservation(const Reservation& reservation);
     bool removeReservation(int reservationId, Reservation& removedReservation);
     void displayActiveReservations() const;
     std::size_t getReservationCount() const;
+    int getNextReservationId() const;
     void clear();
 };
 
