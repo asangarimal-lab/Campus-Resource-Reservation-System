@@ -34,6 +34,9 @@ Person B pull request:
 https://github.com/asangarimal-lab/Campus-Resource-Reservation-System/pull/new/feature/reservation-management
 
 After the PR is opened, copy the real PR number here.
+Person C pull request:
+
+Will be added after `feature/queue-stack` is pushed and the pull request is opened.
 
 ## Screenshots to save for the ZIP (optional but useful)
 
