@@ -2,17 +2,16 @@
 
 GitHub: https://github.com/asangarimal-lab/Campus-Resource-Reservation-System
 
-Group project. Students reserve campus resources (rooms, laptops, lab
-kits, tutoring times).
+This is our group project. Students can reserve campus stuff like study
+rooms, laptops, lab kits, and tutoring slots.
 
-**Milestone 1 submission is on the `milestone-1` branch.** Check that
-out. `main` does not have the program on it.
+**Submit / demo Milestone 1 from the `milestone-1` branch.**
 
-## Team / branches
+## Team
 
-| Name | Work on this branch only | Milestone 1 part |
+| Name | Branch (commit only here) | Milestone 1 work |
 | --- | --- | --- |
-| Asanga Rimal | `asanga-rimal` | Reservations and linked list |
+| Asanga Rimal | `asanga-rimal` | Reservations and the linked list |
 | Sebastian Balderrama | `sebastian-balderrama` | Resource management |
 | Anugrah Lama | `anugrah-lama` | Waiting list queue and cancellation stack |
 
@@ -20,30 +19,78 @@ out. `main` does not have the program on it.
 
 ```
 asanga-rimal
-sebastian-balderrama   -->  pull request  -->  milestone-1   (this is M1)
+sebastian-balderrama   --PR-->  milestone-1    <-- this is Milestone 1
 anugrah-lama
 ```
 
-Rules we agreed on:
+Rules:
 
 1. Each person only commits and pushes on their own name branch.
-2. Nobody commits on `milestone-1` or `main`. Those branches only
-   change when we merge a pull request.
-3. When your part is ready, open a PR: `your-name` -> `milestone-1`.
-4. After all three PRs are merged, `milestone-1` is the Milestone 1
-   zip / demo.
-5. Later milestones will use `milestone-2`, same idea. We merge a
-   finished milestone into `main` only when we are done with it.
-
-If you clone:
+2. Do not commit on `milestone-1` or `main`. Feature work does not go
+   there.
+3. When your part is ready, open a pull request from your name branch
+   into `milestone-1`.
+4. `milestone-1` is the combined program we turn in for this milestone.
+5. `main` is not the working copy of the project. Later we can merge a
+   finished milestone into `main` if we want a default branch with
+   everything. For now leave `main` alone.
 
 ```
 git clone https://github.com/asangarimal-lab/Campus-Resource-Reservation-System.git
 git checkout milestone-1
 ```
 
-To work on your part:
+## How to compile and run
+
+On CELL or a regular computer:
 
 ```
-git checkout asanga-rimal          # or sebastian-balderrama / anugrah-lama
+make
+./reservation_system
 ```
+
+Without make:
+
+```
+g++ -Wall -std=c++11 -o reservation_system main.cpp Resource.cpp ResourceManager.cpp Reservation.cpp ReservationManager.cpp WaitingQueue.cpp CancellationStack.cpp
+./reservation_system
+```
+
+Needs `resources.txt` and `reservations.txt` in the same folder.
+
+## Menu
+
+1. Display all resources
+2. Check resource availability
+3. Display active reservations
+4. Create a reservation (unavailable / date conflict goes to waiting list)
+5. Cancel a reservation (goes on the stack)
+6. Display waiting list
+7. Undo last cancellation
+8. Display cancellation history
+9. Exit
+
+## File format
+
+`resources.txt`
+
+```
+resourceId|name|type|status
+R101|Study Room 101|Study Room|Available
+```
+
+`reservations.txt`
+
+```
+reservationId|studentId|studentName|resourceId|MM/DD/YYYY
+301|1001|Alice Smith|R101|09/15/2026
+```
+
+## Who wrote which files
+
+- Sebastian (`sebastian-balderrama`): `Resource.*`, `ResourceManager.*`, `resources.txt`
+- Asanga (`asanga-rimal`): `Reservation.*`, `ReservationManager.*`, `reservations.txt`
+- Anugrah (`anugrah-lama`): `WaitingQueue.*`, `CancellationStack.*`
+- After those three branches were merged, `main.cpp` / `Makefile` run the whole thing
+
+See `GroupContributionReport.md` and `ComplexityAnalysis.md`.
