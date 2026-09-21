@@ -2,38 +2,28 @@
 #define RESERVATION_H
 
 #include <string>
+using namespace std;
 
-// Reservation represents one active reservation in the system.
-// It only stores reservation data; linked-list behavior belongs to ReservationManager.
+// Holds the info for one reservation
 class Reservation {
 private:
     int reservationId;
     int studentId;
-    std::string studentName;
-    std::string resourceId;
-    std::string date; // Expected format: MM/DD/YYYY
+    string studentName;
+    string resourceId;
+    string date; // MM/DD/YYYY
 
 public:
-    // Default constructor is useful when a Reservation object must be created
-    // before data is loaded into it (for example, during cancellation).
     Reservation();
+    Reservation(int reservationId, int studentId, string studentName,
+                string resourceId, string date);
 
-    // Main constructor used when creating a complete reservation.
-    Reservation(int reservationId,
-                int studentId,
-                const std::string& studentName,
-                const std::string& resourceId,
-                const std::string& date);
-
-    // Read-only accessors. The manager can inspect reservation data without
-    // exposing private member variables directly.
     int getReservationId() const;
     int getStudentId() const;
-    const std::string& getStudentName() const;
-    const std::string& getResourceId() const;
-    const std::string& getDate() const;
+    string getStudentName() const;
+    string getResourceId() const;
+    string getDate() const;
 
-    // Displays one reservation in a readable format.
     void display() const;
 };
 

@@ -1,126 +1,102 @@
 # Campus Resource Reservation System
 
 GitHub repository:
+
 https://github.com/asangarimal-lab/Campus-Resource-Reservation-System
 
 This is a group project for Milestone 1. Students can reserve campus resources
 such as study rooms, laptops, calculators, lab equipment, and tutoring times.
-The program also needs waiting lists, cancellation history, and a simple menu.
+
+The system includes resource management, active reservations, waiting lists,
+cancellation history, and reservation restoration.
 
 ## Team
 
-| Person | Name | GitHub branch | Responsibility |
+| Person | Name | GitHub Branch | Responsibility |
 | --- | --- | --- | --- |
-| Person A | Obed Balderrama | `feature/resource-management` | Resource management |
-| Person B | Asanga Rimal | `feature/reservation-management` | Reservations and linked list |
-| Person C | Anugrah Lama | `feature/queue-stack` | Waiting-list queue and cancellation stack |
+| Person A | Obed Balderrama | `feature/resource-management` | Resource Management |
+| Person B | Asanga Rimal | `feature/reservation-management` | Reservation Management and Linked List |
+| Person C | Anugrah Lama | `feature/queue-stack` | Waiting List Queue and Cancellation History Stack |
 
-## How to clone and make your branch
+## GitHub Workflow
 
-```bash
-git clone https://github.com/asangarimal-lab/Campus-Resource-Reservation-System.git
-cd Campus-Resource-Reservation-System
-```
+Each team member works on their own feature branch.
 
-Obed:
-```bash
-git checkout main
-git checkout -b feature/resource-management
-```
+- `feature/resource-management`
+- `feature/reservation-management`
+- `feature/queue-stack`
 
-Anugrah:
-```bash
-git checkout main
-git checkout -b feature/queue-stack
-```
+Each member commits their own work, pushes the feature branch to GitHub, and
+opens a pull request into `main`.
 
-Please commit from your own GitHub account. When your part is done, push the
-branch and open a Pull Request into `main`. Do not email finished files for
-someone else to upload.
+## Reservation Management
 
-## What is in this branch right now (Asanga)
+`Reservation.h` and `Reservation.cpp` represent individual reservation records.
 
-- `Reservation.h` / `Reservation.cpp`
-- `ReservationManager.h` / `ReservationManager.cpp`
-- `reservations.txt`
-- `README.md`
-- `ComplexityAnalysis.md` (insertion and removal; queue/undo still need Person C)
+`ReservationManager.h` and `ReservationManager.cpp` manage active reservations.
 
-ReservationManager stores active reservations in a custom singly linked list
-with head and tail pointers. It can insert, remove, traverse, display, load
-from a file, create a reservation, cancel a reservation, and restore one for
-undo.
+Active reservations are stored using a custom singly linked list with head and
+tail pointers.
 
-After Person A merges, `main` should call:
+Reservation management supports:
 
-```cpp
-bool resourceExists(const std::string& resourceId) const;
-bool isResourceAvailable(const std::string& resourceId) const;
-```
+- Creating reservations
+- Cancelling reservations
+- Displaying active reservations
+- Loading reservations from a file
+- Duplicate reservation ID validation
+- Date validation
+- Resource/date conflict validation
+- Restoring cancelled reservations
 
-before creating a new reservation. If the resource is not available, Person C
-should add the student to the waiting queue.
+## Waiting List Queue
 
-When a reservation is cancelled, ReservationManager returns the Reservation
-object so Person C can push it onto the cancellation stack. Undo should pop
-that record and call:
+`WaitingQueue.h` and `WaitingQueue.cpp` implement the waiting list.
 
-```cpp
-reservationManager.restoreReservation(...)
-```
+The queue uses front and rear pointers and supports:
 
-## File formats
+- Enqueue
+- Dequeue
+- Display waiting list
+- Empty queue checking
 
-`resources.txt` (Person A)
+The waiting list follows FIFO (First In, First Out) order.
+
+## Cancellation History Stack
+
+`CancellationStack.h` and `CancellationStack.cpp` implement cancellation
+history.
+
+The stack supports:
+
+- Push cancelled reservation
+- Pop most recently cancelled reservation
+- Display cancellation history
+- Empty stack checking
+
+The cancellation history follows LIFO (Last In, First Out) order.
+
+When a reservation is cancelled, the cancelled Reservation object can be pushed
+onto the cancellation stack.
+
+To undo a cancellation, the most recently cancelled reservation is popped from
+the stack and can be restored through ReservationManager.
+
+## Resource Management Integration
+
+Resource management is responsible for loading and storing campus resources,
+displaying resources, and checking resource availability.
+
+Before creating a reservation, the system should verify that the requested
+resource exists and is available.
+
+If a requested resource is unavailable, the student can be added to the waiting
+list.
+
+## File Formats
+
+`resources.txt`
 
 ```text
 resourceId|name|type|status
 R101|Study Room 101|Study Room|Available
-```
-
-`reservations.txt`
-
-```text
-reservationId|studentId|studentName|resourceId|MM/DD/YYYY
-301|1001|Alice Smith|R101|09/15/2026
-```
-
-## Compile (after all three parts are merged)
-
-On CELL / a lab machine, from the project folder:
-
-```bash
-g++ -std=c++11 main.cpp Resource.cpp ResourceManager.cpp Reservation.cpp ReservationManager.cpp WaitingList.cpp CancellationStack.cpp -o reservation_system
-./reservation_system
-```
-
-If your files are named a little differently, just list the actual `.cpp`
-files in that same command.
-
-## Menu (full program)
-
-```text
-===== Campus Resource Reservation System =====
-
-1. View Resources
-2. Create Reservation
-3. Cancel Reservation
-4. View Waiting Lists
-5. Undo Cancellation
-6. Search Reservations
-7. Sort Resources
-8. Generate Report
-9. Exit
-```
-
-Milestone 1 only needs resource viewing, create/cancel reservations, waiting
-lists, undo, and basic error handling. Search, sort, and extra reports can wait
-until the final submission if we run out of time.
-
-## Error handling we already have on Person B's side
-
-- Duplicate reservation IDs are rejected
-- Empty names / bad dates are rejected
-- Same resource on the same date is rejected
-- Cancel on a missing ID is rejected
-- Reservation file open failure is reported

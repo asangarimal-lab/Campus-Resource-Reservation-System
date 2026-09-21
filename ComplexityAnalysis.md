@@ -3,7 +3,9 @@
 Campus Resource Reservation System — Milestone 1
 
 n = number of active reservations in the linked list
+
 w = number of students waiting for one resource
+
 r = number of resources
 
 ---
@@ -15,21 +17,22 @@ Author: Asanga Rimal (Person B)
 Active reservations are stored in a singly linked list with both a head pointer
 and a tail pointer.
 
-Inserting a new node at the tail does not require walking the list, so the
-insert itself is O(1).
+Inserting a new node at the tail does not require walking through the list, so
+the insertion itself is O(1).
 
-Before a new reservation is accepted we still have to:
+Before a new reservation is accepted, we still have to:
 
-1. Make sure the reservation ID is not already in the list. That is a linear
-   search, O(n).
-2. Make sure the same resource is not already reserved on that date. That is
-   also a walk down the list, O(n).
+1. Make sure the reservation ID is not already in the list. This requires a
+   linear search, O(n).
 
-So the linked-list insert is O(1), but the full create-reservation function is
-O(n) because of the checks.
+2. Make sure the same resource is not already reserved on that date. This also
+   requires walking through the list, O(n).
 
-Using a tail pointer is still useful. Without it, even the insert would be O(n)
-because we would have to find the last node every time.
+So the linked-list insertion is O(1), but the full create-reservation operation
+is O(n) because of the validation checks.
+
+Using a tail pointer is useful because without it, even inserting at the end
+would require walking through the list and would take O(n).
 
 ---
 
@@ -37,18 +40,16 @@ because we would have to find the last node every time.
 
 Author: Asanga Rimal (Person B)
 
-To cancel a reservation we start at the head and move forward until the
-reservation ID matches. In the worst case the node is at the end, or it is not
-in the list at all, so the search is O(n).
+To cancel a reservation, we start at the head and move forward until the
+reservation ID matches.
 
-Unlinking the node and deleting it is O(1) after we have found it. We also
-update the tail pointer if the last node was removed.
+In the worst case, the reservation is at the end of the list or is not in the
+list, so the search takes O(n).
 
-Overall cancel/remove is O(n).
+Once the reservation is found, unlinking and deleting the node takes O(1).
+The tail pointer is also updated if the last node is removed.
 
-This is normal for a singly linked list when we search by ID. The list is still
-a good fit because reservations are added and removed often, and we do not need
-random access by index.
+Therefore, the overall cancellation/removal operation is O(n).
 
 ---
 
@@ -56,30 +57,43 @@ random access by index.
 
 Author: Anugrah Lama (Person C)
 
-When a student joins the waiting list, I put them at the end of the line.
-Rather than traversing the entire queue, I don't have to since I maintained a rear pointer.
-so the addStudent operation takes O(1) time.
+When a student joins the waiting list, I add them to the end of the queue.
 
-To remove the next student, I remove the first node. Since I
-They already have a front pointer, as well, so removing the next student is also O(1).
+Since the queue keeps a rear pointer, I do not need to traverse the entire
+queue to find the last node. Therefore, enqueue takes O(1) time.
 
-To show the waiting list, I am going to begin at the front of the list and work my way through each...
-node, which is O(w) for w being the number of students waiting.
+To remove the next student, I remove the node at the front of the queue.
+Since the queue also keeps a front pointer, dequeue takes O(1) time.
 
-I used a queue which meant that the waiting list should be first come first served.
+To display the waiting list, I start at the front and visit every node in the
+queue. Therefore, displaying the waiting list takes O(w), where w is the
+number of students currently waiting.
+
+I used a queue because the waiting list needs to follow FIFO
+(First In, First Out) order. The first student added to the waiting list is
+the first student removed.
+
+---
 
 ## Undo cancellation
 
 Author: Anugrah Lama (Person C)
 
-For cancelation history, I push each cancel reservation onto the top.
-of the stack. If I already have a top pointer, then pushing takes O(1) time.
+For cancellation history, each cancelled reservation is pushed onto the top
+of the stack.
 
-To cancel, I remove the top of the stack.
-Also O(1) - no searching through the stack!
+Since the stack keeps a top pointer, pushing a cancelled reservation takes
+O(1) time.
 
-The commands to add the reservation back to the active reservation list are
-This takes O(n) time: restoresReservation.
+To undo a cancellation, the most recently cancelled reservation is popped
+from the top of the stack. The pop operation also takes O(1) time because
+there is no need to search through the stack.
 
-I used a stack for the reason that we only want to undo the last cancelled operation,
-so last canceled reservation is first restored.
+After the reservation is popped, restoring it to the active reservation
+system may require the normal reservation validation checks. Those checks can
+take O(n) time because the active reservation linked list may need to be
+searched.
+
+I used a stack because cancellation undo needs to follow LIFO
+(Last In, First Out) order. This means the most recently cancelled reservation
+is the first one available to be restored.
