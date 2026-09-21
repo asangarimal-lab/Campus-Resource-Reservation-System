@@ -9,14 +9,11 @@ r = how many resources we have
 ## Reservation insertion
 Asanga Rimal
 
-I stored the active reservations in a linked list with a head and a tail.
+I used a linked list with a head and a tail to store the active reservations.
 
-Adding a node at the tail is O(1) because I already have a pointer to the last
-node, so I don't have to walk the whole list just to insert.
+Since I already have a reference to the last node, I don't need to walk the entire list in order to add a node at the tail, making it O(1).
 
-When we create a reservation I still have to look through the list to see if
-the ID is already used and if that resource is already booked on that date.
-Those checks are O(n).
+I still have to check the list when we make a reservation to verify whether the resource is already reserved for that date and if the ID has previously been used. They are O(n) checks.
 
 So insert by itself is O(1), but createReservation is O(n) overall.
 
