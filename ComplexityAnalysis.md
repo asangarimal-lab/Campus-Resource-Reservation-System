@@ -97,3 +97,13 @@ searched.
 I used a stack because cancellation undo needs to follow LIFO
 (Last In, First Out) order. This means the most recently cancelled reservation
 is the first one available to be restored.
+## Cancellation integration and safe retrieval
+
+Queue and stack peek operations take O(1) time. The output-parameter dequeue
+and pop operations also take O(1), assuming bounded record field lengths.
+Both data structures use O(k) space for k stored records.
+
+cancelAndRecord takes O(n) for reservation removal plus O(1) for stack push.
+undoCancellation takes O(1) to peek, O(n) to validate and restore, and O(1)
+to pop after success. Its overall time is O(n). A rejected restoration leaves
+the history entry in place. No automatic waiting-list promotion is performed.

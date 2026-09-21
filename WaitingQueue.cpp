@@ -1,87 +1,68 @@
 #include "WaitingQueue.h"
 #include <iostream>
-using namespace std;
 
-// Starts with an empty queue
-WaitingQueue::WaitingQueue() {
-    front = nullptr;
-    rear = nullptr;
-}
+WaitingQueue::WaitingQueue() : front(nullptr), rear(nullptr) {}
 
-// Deletes all remaining nodes when the queue is destroyed
 WaitingQueue::~WaitingQueue() {
     while (front != nullptr) {
-        Node* temp = front;
+        Node* old = front;
         front = front->next;
-        delete temp;
+        delete old;
     }
-
-    rear = nullptr;
 }
 
 bool WaitingQueue::isEmpty() const {
     return front == nullptr;
 }
 
-// Adds a student to the end of the waiting list
-void WaitingQueue::enqueue(int studentId, string studentName, string resourceId) {
-    Node* newNode = new Node;
-
-    newNode->studentId = studentId;
-    newNode->studentName = studentName;
-    newNode->resourceId = resourceId;
-    newNode->next = nullptr;
-
-    if (isEmpty()) {
-        front = newNode;
-        rear = newNode;
+void WaitingQueue::enqueue(int studentId, std::string studentName,
+                           std::string resourceId, std::string date) {
+    Node* node = new Node{{studentId, studentName, resourceId, date}, nullptr};
+    if (rear != nullptr) {
+        rear->next = node;
+    } else {
+        front = node;
     }
-    else {
-        rear->next = newNode;
-        rear = newNode;
-    }
-
-    cout << studentName << " was added to the waiting list." << endl;
+    rear = node;
+    std::cout << studentName << " was added to the waiting list.\n";
 }
 
-// Removes the student at the front of the waiting list
+bool WaitingQueue::peek(WaitingRequest& request) const {
+    if (isEmpty()) return false;
+    request = front->request;
+    return true;
+}
+
+bool WaitingQueue::dequeue(WaitingRequest& request) {
+    if (!peek(request)) return false;
+    Node* old = front;
+    front = front->next;
+    if (front == nullptr) rear = nullptr;
+    delete old;
+    return true;
+}
+
 void WaitingQueue::dequeue() {
-    if (isEmpty()) {
-        cout << "The waiting list is empty." << endl;
+    WaitingRequest request;
+    if (!dequeue(request)) {
+        std::cout << "The waiting list is empty.\n";
         return;
     }
-
-    Node* temp = front;
-
-    cout << front->studentName
-         << " was removed from the waiting list." << endl;
-
-    front = front->next;
-
-    if (front == nullptr) {
-        rear = nullptr;
-    }
-
-    delete temp;
+    std::cout << request.studentName << " was removed from the waiting list.\n";
 }
 
-// Displays everyone currently in the waiting list
 void WaitingQueue::displayWaitingList() const {
     if (isEmpty()) {
-        cout << "The waiting list is empty." << endl;
+        std::cout << "The waiting list is empty.\n";
         return;
     }
-
-    Node* current = front;
-
-    cout << "\nWaiting List:" << endl;
-
-    while (current != nullptr) {
-        cout << "Student ID: " << current->studentId
-             << " | Student: " << current->studentName
-             << " | Resource ID: " << current->resourceId
-             << endl;
-
-        current = current->next;
+    std::cout << "\nWaiting List:\n";
+    for (Node* node = front; node != nullptr; node = node->next) {
+        const WaitingRequest& request = node->request;
+        std::cout << "Student ID: " << request.studentId
+                  << " | Student: " << request.studentName
+                  << " | Resource ID: " << request.resourceId;
+        if (!request.date.empty()) std::cout << " | Date: " << request.date;
+        std::cout << '\n';
     }
 }

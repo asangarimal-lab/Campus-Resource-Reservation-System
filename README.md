@@ -100,3 +100,37 @@ list.
 ```text
 resourceId|name|type|status
 R101|Study Room 101|Study Room|Available
+```
+
+## Anugrah's queue and stack integration
+
+The queue supports the original three-argument enqueue and an optional fourth
+argument for the requested date. Use dequeue(WaitingRequest&) to retrieve a
+request, or peek(WaitingRequest&) to inspect it without removal. Both return
+false on an empty queue and leave the output unchanged. Entries remain FIFO.
+Resource existence and availability checks belong to the calling resource module.
+
+CancellationStack provides bool pop(Reservation&) and bool peek(Reservation&).
+Both report empty history without returning a dummy reservation. The original
+no-argument pop remains available for existing callers.
+
+Include CancellationWorkflow.h to use cancelAndRecord(manager, history, id,
+message) and undoCancellation(manager, history, message). Successful
+cancellation records history; failed cancellation does not. Undo restores the
+latest cancelled reservation through ReservationManager's validation. If the
+resource/date or reservation ID conflicts, undo returns false and keeps history
+so it can be retried. These helpers do not automatically promote waiting students.
+
+### Run Anugrah's tests
+
+With a C++ compiler installed, run from the repository directory:
+
+```powershell
+g++ -std=c++17 -Wall -Wextra -pedantic Reservation.cpp ReservationManager.cpp WaitingQueue.cpp CancellationStack.cpp CancellationWorkflow.cpp QueueStackTests.cpp -o queue_stack_tests.exe
+.\queue_stack_tests.exe
+```
+
+QueueStackTests.cpp is a standalone test program, not the application menu.
+When the team adds its application main, build that separately from this test.
+Tests cover FIFO/LIFO, empty operations, reuse after emptying, displays,
+successful cancellation/undo, missing IDs, and conflicts that preserve history.

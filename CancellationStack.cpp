@@ -72,3 +72,17 @@ void CancellationStack::displayHistory() const {
         current = current->next;
     }
 }
+// Safe retrieval leaves the output unchanged when history is empty.
+bool CancellationStack::peek(Reservation& reservation) const {
+    if (isEmpty()) return false;
+    reservation = top->reservation;
+    return true;
+}
+
+bool CancellationStack::pop(Reservation& reservation) {
+    if (!peek(reservation)) return false;
+    Node* old = top;
+    top = top->next;
+    delete old;
+    return true;
+}
