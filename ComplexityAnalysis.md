@@ -23,11 +23,10 @@ have to find the end every time.
 ## Reservation removal
 Asanga Rimal
 
-To cancel, I start at head and keep going until I find the matching ID.
-Worst case I look at every node, so that's O(n).
+In order to cancel, I start at head and keep going until I find the corresponding/matching ID.
+In worst case I will have to look at every node, so that's O(n).
 
-After I find it, taking the node out and deleting it is O(1). If it was the
-last node I also move the tail pointer.
+Once found, removing the node and deleting it takes O(1) time. Also, in case the removed node happens to be the last node, the tail pointer needs to be updated accordingly.
 
 So cancel/remove is O(n) total. That's pretty normal for a linked list when
 you search by ID. I still used a list because we add and delete reservations
