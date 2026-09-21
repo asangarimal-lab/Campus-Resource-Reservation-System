@@ -18,6 +18,16 @@ My (Asanga's) commits on feature/reservation-management
 - Add reservation validation and cancellation
 - Add README and complexity analysis
 
+My (Anugrah's) commits on feature/queue-stack
+
+- Add WaitingQueue class header
+- Add WaitingQueue class implementation
+- Add queue operations for waiting list management
+- Add CancellationStack class header
+- Add CancellationStack class implementation
+- Add cancellation history and undo functionality
+- Add queue and stack complexity analysis
+  
 ## Pull request
 
 Person B pull request:
