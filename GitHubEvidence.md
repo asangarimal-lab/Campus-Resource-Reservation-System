@@ -18,15 +18,12 @@ My (Asanga's) commits on feature/reservation-management
 - Add reservation validation and cancellation
 - Add README and complexity analysis
 
-My (Anugrah's) commits on feature/queue-stack
+## Person C commits on feature/queue-stack
 
-- Add WaitingQueue class header
-- Add WaitingQueue class implementation
-- Add queue operations for waiting list management
-- Add CancellationStack class header
-- Add CancellationStack class implementation
-- Add cancellation history and undo functionality
-- Add queue and stack complexity analysis
+Anugrah Lama
+
+- Add waiting list queue implementation
+- Add cancellation history stack implementation
   
 ## Pull request
 
@@ -46,3 +43,9 @@ Will be added after `feature/queue-stack` is pushed and the pull request is open
 
 Obed and Anugrah should each take the same kinds of screenshots for their own branches.
 ************
+### Person C screenshots to save
+
+1. `feature/queue-stack` branch on GitHub
+2. Anugrah's commits on `feature/queue-stack`
+3. Person C pull request page
+4. Merged pull request page after merge
