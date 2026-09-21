@@ -56,29 +56,30 @@ random access by index.
 
 Author: Anugrah Lama (Person C)
 
-Please complete this section on `feature/queue-stack` and replace these notes
-with your own write-up.
+When a student joins the waiting list, I put them at the end of the line.
+Rather than traversing the entire queue, I don't have to since I maintained a rear pointer.
+so the addStudent operation takes O(1) time.
 
-Suggested points to cover:
+To remove the next student, I remove the first node. Since I
+They already have a front pointer, as well, so removing the next student is also O(1).
 
-- enqueue (add student): O(1) if the queue keeps a rear pointer
-- dequeue (serve the next student): O(1) if the queue keeps a front pointer
-- display waiting list: O(w)
-- why a queue is the right structure (FIFO / first come, first served)
+To show the waiting list, I am going to begin at the front of the list and work my way through each...
+node, which is O(w) for w being the number of students waiting.
 
----
+I used a queue which meant that the waiting list should be first come first served.
 
 ## Undo cancellation
 
 Author: Anugrah Lama (Person C)
 
-Please complete this section on `feature/queue-stack` and replace these notes
-with your own write-up.
+For cancelation history, I push each cancel reservation onto the top.
+of the stack. If I already have a top pointer, then pushing takes O(1) time.
 
-Suggested points to cover:
+To cancel, I remove the top of the stack.
+Also O(1) - no searching through the stack!
 
-- push cancelled reservation onto the stack: O(1)
-- pop the most recent cancellation: O(1)
-- restore that reservation into the linked list: uses Person B's restore,
-  which is O(n) because of the same ID/date checks
-- why a stack is the right structure (LIFO / only the most recent undo)
+The commands to add the reservation back to the active reservation list are
+This takes O(n) time: restoresReservation.
+
+I used a stack for the reason that we only want to undo the last cancelled operation,
+so last canceled reservation is first restored.

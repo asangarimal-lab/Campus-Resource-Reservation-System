@@ -18,13 +18,22 @@ https://github.com/asangarimal-lab/Campus-Resource-Reservation-System
 - Add reservation validation and cancellation
 - Add README and complexity analysis
 
+## Person C commits on feature/queue-stack
+
+Anugrah Lama
+
+- Add waiting list queue implementation
+- Add cancellation history stack implementation
+
 ## Pull request
 
 Person B pull request:
 https://github.com/asangarimal-lab/Campus-Resource-Reservation-System/pull/new/feature/reservation-management
 
 After the PR is opened, copy the real PR number here.
+Person C pull request:
 
+Will be added after `feature/queue-stack` is pushed and the pull request is opened.
 ## Screenshots to save for the ZIP (optional but useful)
 
 1. GitHub → Code → Branches, showing the three feature branches
@@ -32,3 +41,9 @@ After the PR is opened, copy the real PR number here.
 3. The merged pull request page (after it is merged)
 
 Obed and Anugrah should each take the same kinds of screenshots for their own branches.
+### Person C screenshots to save
+
+1. `feature/queue-stack` branch on GitHub
+2. Anugrah's commits on `feature/queue-stack`
+3. Person C pull request page
+4. Merged pull request page after merge
