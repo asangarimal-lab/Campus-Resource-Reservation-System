@@ -1,4 +1,4 @@
-# GitHub Evidence (Milestone 1)
+GitHub Evidence (Milestone 1)
 
 Repository:
 https://github.com/asangarimal-lab/Campus-Resource-Reservation-System
@@ -10,7 +10,7 @@ https://github.com/asangarimal-lab/Campus-Resource-Reservation-System
 - feature/resource-management      (Obed Balderrama — Person A)
 - feature/queue-stack              (Anugrah Lama — Person C)
 
-## Person B commits on feature/reservation-management
+My (Asanga's) commits on feature/reservation-management
 
 - Add Reservation class header
 - Add Reservation class implementation
@@ -32,3 +32,4 @@ After the PR is opened, copy the real PR number here.
 3. The merged pull request page (after it is merged)
 
 Obed and Anugrah should each take the same kinds of screenshots for their own branches.
+************
