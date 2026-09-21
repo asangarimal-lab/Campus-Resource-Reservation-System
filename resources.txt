@@ -1,0 +1,10 @@
+R101|Study Room 101|Study Room|Available
+R103|Study Room 103|Study Room|Available
+R105|Study Room 105|Study Room|Available
+R107|Laptop Cart A|Laptop|Available
+R109|Laptop Cart B|Laptop|Available
+R111|Graphing Calculator Set|Calculator|Available
+R113|Chemistry Lab Kit|Lab Equipment|Available
+R115|Physics Lab Kit|Lab Equipment|Unavailable
+R117|Tutoring Slot - Math|Tutoring|Available
+R119|Tutoring Slot - Writing|Tutoring|Available
