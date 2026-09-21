@@ -39,19 +39,29 @@ a lot.
 ## Waiting-list processing
 Anugrah Lama
 
-(Anugrah fill this in)
+When a student joins the waiting list, I put them at the end of the line.
+Rather than traversing the entire queue, I don't have to since I maintained a rear pointer.
+so the addStudent operation takes O(1) time.
 
-- add to queue: O(1) if you keep a rear pointer
-- take the next person off: O(1) if you keep a front pointer
-- print the list: O(w)
-- queue makes sense because it's first come first served
+To remove the next student, I remove the first node. Since I
+They already have a front pointer, as well, so removing the next student is also O(1).
+
+To show the waiting list, I am going to begin at the front of the list and work my way through each...
+node, which is O(w) for w being the number of students waiting.
+
+I used a queue which meant that the waiting list should be first come first served.
 
 ## Undo cancellation
 Anugrah Lama
 
-(Anugrah fill this in)
+For cancelation history, I push each cancel reservation onto the top.
+of the stack. If I already have a top pointer, then pushing takes O(1) time.
 
-- push onto the stack: O(1)
-- pop the last cancel: O(1)
-- putting it back in my list uses restoreReservation which is O(n)
-- stack makes sense because we can only undo the most recent cancel
+To cancel, I remove the top of the stack.
+Also O(1) - no searching through the stack!
+
+The commands to add the reservation back to the active reservation list are
+This takes O(n) time: restoresReservation.
+
+I used a stack for the reason that we only want to undo the last cancelled operation,
+so last canceled reservation is first restored.
