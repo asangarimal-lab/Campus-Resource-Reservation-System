@@ -11,14 +11,14 @@ using namespace std;
 
 void showMenu() {
     cout << "\n===== Campus Resource Reservation System =====\n\n";
-    cout << "1. Display all resources\n";
-    cout << "2. Check resource availability\n";
-    cout << "3. Display active reservations\n";
-    cout << "4. Create a reservation\n";
-    cout << "5. Cancel a reservation\n";
-    cout << "6. Display waiting list\n";
-    cout << "7. Undo last cancellation\n";
-    cout << "8. Display cancellation history\n";
+    cout << "1. Display active reservations\n";
+    cout << "2. Create a reservation\n";
+    cout << "3. Cancel a reservation\n";
+    cout << "4. Display waiting list (queue)\n";
+    cout << "5. Undo last cancellation (stack)\n";
+    cout << "6. Display cancellation history (stack)\n";
+    cout << "7. Display all resources\n";
+    cout << "8. Check resource availability\n";
     cout << "9. Exit\n";
     cout << "Choice: ";
 }
@@ -71,11 +71,12 @@ void createReservation(ResourceManager& resources,
     cout << "Date (MM/DD/YYYY): ";
     cin >> date;
 
-    // If the resource is marked unavailable, or someone already has
-    // that resource on this date, put the student on the waiting list.
+    // Queue connection: if the resource is unavailable, or that
+    // resource/date is already booked, the student goes on the waiting list.
     if (!resources.isResourceAvailable(resourceId) ||
         reservations.isResourceReservedOnDate(resourceId, date)) {
         cout << resourceId << " is not available for that date.\n";
+        cout << "Adding the student to the waiting list queue.\n";
         waitingList.enqueue(studentId, studentName, resourceId);
         return;
     }
@@ -107,6 +108,7 @@ void cancelReservation(ReservationManager& reservations,
     string message;
     if (reservations.cancelReservation(reservationId, cancelled, message)) {
         cout << message << endl;
+        // Stack connection: cancelled record is pushed so undo can pop it.
         history.push(cancelled);
     }
     else {
@@ -117,7 +119,7 @@ void cancelReservation(ReservationManager& reservations,
 void undoCancellation(ReservationManager& reservations,
                       CancellationStack& history) {
     if (history.isEmpty()) {
-        cout << "Nothing to undo.\n";
+        cout << "Cancellation stack is empty. Nothing to undo.\n";
         return;
     }
 
@@ -129,7 +131,6 @@ void undoCancellation(ReservationManager& reservations,
     }
     else {
         cout << "Couldn't restore that reservation: " << errorMessage << endl;
-        // keep it on the stack if restore failed
         history.push(restored);
     }
 }
@@ -161,28 +162,28 @@ int main() {
 
         switch (choice) {
             case 1:
-                resources.displayAllResources();
-                break;
-            case 2:
-                checkAvailability(resources);
-                break;
-            case 3:
                 reservations.displayActiveReservations();
                 break;
-            case 4:
+            case 2:
                 createReservation(resources, reservations, waitingList);
                 break;
-            case 5:
+            case 3:
                 cancelReservation(reservations, history);
                 break;
-            case 6:
+            case 4:
                 waitingList.displayWaitingList();
                 break;
-            case 7:
+            case 5:
                 undoCancellation(reservations, history);
                 break;
-            case 8:
+            case 6:
                 history.displayHistory();
+                break;
+            case 7:
+                resources.displayAllResources();
+                break;
+            case 8:
+                checkAvailability(resources);
                 break;
             case 9:
                 cout << "Goodbye.\n";

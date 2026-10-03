@@ -60,14 +60,14 @@ Needs `resources.txt` and `reservations.txt` in the same folder.
 
 ## Menu
 
-1. Display all resources
-2. Check resource availability
-3. Display active reservations
-4. Create a reservation (unavailable / date conflict goes to waiting list)
-5. Cancel a reservation (goes on the stack)
-6. Display waiting list
-7. Undo last cancellation
-8. Display cancellation history
+1. Display active reservations (linked list)
+2. Create a reservation (unavailable / date conflict goes on the waiting-list queue)
+3. Cancel a reservation (pushes onto the cancellation stack)
+4. Display waiting list (queue)
+5. Undo last cancellation (pops the stack)
+6. Display cancellation history (stack)
+7. Display all resources
+8. Check resource availability
 9. Exit
 
 ## File format
