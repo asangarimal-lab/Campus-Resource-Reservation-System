@@ -19,7 +19,9 @@ void showMenu() {
     cout << "6. Display cancellation history (stack)\n";
     cout << "7. Display all resources\n";
     cout << "8. Check resource availability\n";
-    cout << "9. Exit\n";
+    cout << "9. Search reservation by ID\n";
+    cout << "10. Search reservations by student ID\n";
+    cout << "11. Exit\n";
     cout << "Choice: ";
 }
 
@@ -116,6 +118,49 @@ void cancelReservation(ReservationManager& reservations,
     }
 }
 
+void searchReservationById(
+    const ReservationManager& reservations) {
+
+    int reservationId;
+
+    cout << "Reservation ID to search: ";
+    cin >> reservationId;
+
+    if (cin.fail()) {
+        clearBadInput();
+        cout << "Reservation ID has to be a number.\n";
+        return;
+    }
+
+    const Reservation* result =
+        reservations.findReservation(reservationId);
+
+    if (result == NULL) {
+        cout << "No reservation found with that ID.\n";
+        return;
+    }
+
+    cout << "\nReservation found:\n";
+    result->display();
+}
+
+void searchReservationsByStudent(
+    const ReservationManager& reservations) {
+
+    int studentId;
+
+    cout << "Student ID to search: ";
+    cin >> studentId;
+
+    if (cin.fail()) {
+        clearBadInput();
+        cout << "Student ID has to be a number.\n";
+        return;
+    }
+
+    reservations.searchReservationsByStudentId(studentId);
+}
+
 void undoCancellation(ReservationManager& reservations,
                       CancellationStack& history) {
     if (history.isEmpty()) {
@@ -150,7 +195,7 @@ int main() {
     }
 
     int choice = 0;
-    while (choice != 9) {
+    while (choice != 11) {
         showMenu();
         cin >> choice;
 
@@ -186,6 +231,12 @@ int main() {
                 checkAvailability(resources);
                 break;
             case 9:
+                searchReservationById(reservations);
+                break;
+            case 10:
+                searchReservationsByStudent(reservations);
+                break;
+            case 11:
                 cout << "Goodbye.\n";
                 break;
             default:

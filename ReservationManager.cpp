@@ -310,6 +310,9 @@ const Reservation* ReservationManager::findReservation(
 
     Node* current = head;
 
+    // LINEAR SEARCH:
+    // Start at the first node and examine each reservation
+    // one at a time until the requested ID is found.
     while (current != NULL) {
         if (current->data.getReservationId() == reservationId) {
             return &(current->data);
@@ -318,7 +321,36 @@ const Reservation* ReservationManager::findReservation(
         current = current->next;
     }
 
+    // We reached the end of the linked list without a match.
     return NULL;
+}
+
+void ReservationManager::searchReservationsByStudentId(
+    int studentId) const {
+
+    Node* current = head;
+    bool found = false;
+
+    cout << "\n----- Reservations for Student "
+         << studentId << " -----\n";
+
+    // LINEAR SEARCH:
+    // Every reservation is examined because one student
+    // may have more than one active reservation.
+    while (current != NULL) {
+
+        if (current->data.getStudentId() == studentId) {
+            current->data.display();
+            found = true;
+        }
+
+        current = current->next;
+    }
+
+    if (!found) {
+        cout << "No active reservations found for this student."
+             << endl;
+    }
 }
 
 void ReservationManager::displayActiveReservations() const {

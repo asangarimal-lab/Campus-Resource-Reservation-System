@@ -58,7 +58,16 @@ public:
     bool isResourceReservedOnDate(const std::string& resourceId,
                                   const std::string& date) const;
 
+    // Performs a manual linear search through the linked list
+    // to locate a reservation by reservation ID.
+    //
+    // Best case: O(1)
+    // Worst case: O(n)
     const Reservation* findReservation(int reservationId) const;
+
+    // Performs a linear search through the active reservation list
+    // and displays all reservations belonging to one student.
+    void searchReservationsByStudentId(int studentId) const;
 
     void insertReservation(const Reservation& reservation);
 
