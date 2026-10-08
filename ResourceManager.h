@@ -19,6 +19,7 @@ public:
 
     bool loadFromFile(string fileName, string& errorMessage);
     void displayAllResources();
+    void displaySortedByName();
     bool displayAvailability(string resourceId, string& message);
 
     bool resourceExists(string resourceId);

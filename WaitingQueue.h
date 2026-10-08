@@ -26,6 +26,9 @@ public:
     void enqueue(int studentId, string studentName, string resourceId);
     void dequeue();
     void displayWaitingList() const;
+
+    // How many students are waiting for this resource (used by the reports)
+    int countForResource(string resourceId) const;
 };
 
 #endif

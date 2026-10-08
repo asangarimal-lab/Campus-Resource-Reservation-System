@@ -65,6 +65,22 @@ void WaitingQueue::dequeue() {
     delete temp;
 }
 
+// Goes from front to rear and counts the students waiting for this resource
+int WaitingQueue::countForResource(string resourceId) const {
+    int count = 0;
+    Node* current = front;
+
+    while (current != nullptr) {
+        if (current->resourceId == resourceId) {
+            count++;
+        }
+
+        current = current->next;
+    }
+
+    return count;
+}
+
 // Displays everyone currently in the waiting list
 void WaitingQueue::displayWaitingList() const {
     if (isEmpty()) {

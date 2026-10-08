@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "MergeSort.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -63,6 +64,32 @@ void ResourceManager::displayAllResources() {
     cout << "----- Resources -----" << endl;
     for (int i = 0; i < resourceCount; i++) {
         resources[i].display();
+    }
+    cout << "Total: " << resourceCount << endl;
+}
+
+// compare function for mergeSort, A to Z by name
+bool nameComesBefore(const Resource& a, const Resource& b) {
+    return a.getName() < b.getName();
+}
+
+void ResourceManager::displaySortedByName() {
+    if (resourceCount == 0) {
+        cout << "No resources loaded." << endl;
+        return;
+    }
+
+    // sort a copy so the original order from the file stays the same
+    Resource sorted[MAX_RESOURCES];
+    for (int i = 0; i < resourceCount; i++) {
+        sorted[i] = resources[i];
+    }
+
+    mergeSort(sorted, resourceCount, nameComesBefore);
+
+    cout << "----- Resources (sorted by name) -----" << endl;
+    for (int i = 0; i < resourceCount; i++) {
+        sorted[i].display();
     }
     cout << "Total: " << resourceCount << endl;
 }

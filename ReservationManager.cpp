@@ -353,6 +353,24 @@ void ReservationManager::searchReservationsByStudentId(
     }
 }
 
+// walk the whole list and count the ones for this resource
+int ReservationManager::countReservationsForResource(
+    const string& resourceId) const {
+
+    int count = 0;
+    Node* current = head;
+
+    while (current != NULL) {
+        if (current->data.getResourceId() == resourceId) {
+            count++;
+        }
+
+        current = current->next;
+    }
+
+    return count;
+}
+
 void ReservationManager::displayActiveReservations() const {
     if (head == NULL) {
         cout << "No active reservations." << endl;
