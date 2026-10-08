@@ -5,7 +5,8 @@ TARGET = reservation_system
 SRCS = main.cpp \
        Resource.cpp ResourceManager.cpp \
        Reservation.cpp ReservationManager.cpp \
-       WaitingQueue.cpp CancellationStack.cpp
+       WaitingQueue.cpp CancellationStack.cpp \
+       ReportManager.cpp
 
 all: $(TARGET)
 
