@@ -60,6 +60,9 @@ public:
 
     const Reservation* findReservation(int reservationId) const;
 
+    // How many active reservations a resource has (used by the reports).
+    int countReservationsForResource(const std::string& resourceId) const;
+
     void insertReservation(const Reservation& reservation);
 
     bool removeReservation(int reservationId,
