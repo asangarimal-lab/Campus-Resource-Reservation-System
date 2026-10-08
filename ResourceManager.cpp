@@ -121,3 +121,11 @@ bool ResourceManager::isResourceAvailable(string resourceId) {
 int ResourceManager::getResourceCount() {
     return resourceCount;
 }
+
+Resource ResourceManager::getResource(int index) {
+    // bad index, just send back an empty resource
+    if (index < 0 || index >= resourceCount) {
+        return Resource();
+    }
+    return resources[index];
+}
