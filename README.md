@@ -70,7 +70,8 @@ Needs `resources.txt` and `reservations.txt` in the same folder.
 8. Check resource availability
 9. Search reservation by ID
 10. Search reservations by student ID
-11. Exit
+11. Display reservations sorted by date
+12. Exit
 
 ## Searching
 
@@ -89,6 +90,17 @@ Time complexity:
 
 - Best case: O(1)
 - Worst case: O(n)
+
+## Sorting
+
+The team wrote one merge sort in `MergeSort.h` (no `std::sort`).
+
+Sebastian uses it to sort resources by name. Reservation sorting uses
+the same merge sort on a copy of the active-reservation linked list,
+ordered by date (MM/DD/YYYY converted to YYYYMMDD so the order is
+chronological). The original linked list stays in insert order.
+
+Time complexity: O(n log n)
 
 ## File format
 
