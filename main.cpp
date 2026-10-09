@@ -21,7 +21,8 @@ void showMenu() {
     cout << "8. Check resource availability\n";
     cout << "9. Search reservation by ID\n";
     cout << "10. Search reservations by student ID\n";
-    cout << "11. Exit\n";
+    cout << "11. Display reservations sorted by date\n";
+    cout << "12. Exit\n";
     cout << "Choice: ";
 }
 
@@ -195,7 +196,7 @@ int main() {
     }
 
     int choice = 0;
-    while (choice != 11) {
+    while (choice != 12) {
         showMenu();
         cin >> choice;
 
@@ -237,6 +238,9 @@ int main() {
                 searchReservationsByStudent(reservations);
                 break;
             case 11:
+                reservations.displayReservationsSortedByDate();
+                break;
+            case 12:
                 cout << "Goodbye.\n";
                 break;
             default:

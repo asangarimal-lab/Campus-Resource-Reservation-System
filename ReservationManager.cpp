@@ -1,4 +1,5 @@
 #include "ReservationManager.h"
+#include "MergeSort.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -390,6 +391,57 @@ void ReservationManager::displayActiveReservations() const {
 
     cout << "Total active reservations: "
          << reservationCount << endl;
+}
+
+// Turn MM/DD/YYYY into YYYYMMDD so 09/15/2026 comes before 10/01/2026.
+int reservationDateKey(const string& date) {
+    if (date.length() != 10) {
+        return 0;
+    }
+
+    int month = (date[0] - '0') * 10 + (date[1] - '0');
+    int day = (date[3] - '0') * 10 + (date[4] - '0');
+    int year = (date[6] - '0') * 1000 +
+               (date[7] - '0') * 100 +
+               (date[8] - '0') * 10 +
+               (date[9] - '0');
+
+    return year * 10000 + month * 100 + day;
+}
+
+bool reservationDateComesBefore(const Reservation& a, const Reservation& b) {
+    return reservationDateKey(a.getDate()) < reservationDateKey(b.getDate());
+}
+
+void ReservationManager::displayReservationsSortedByDate() const {
+    if (head == NULL) {
+        cout << "No active reservations." << endl;
+        return;
+    }
+
+    int n = static_cast<int>(reservationCount);
+    Reservation* sorted = new Reservation[n];
+
+    Node* current = head;
+    int index = 0;
+    while (current != NULL) {
+        sorted[index] = current->data;
+        index++;
+        current = current->next;
+    }
+
+    // MERGE SORT (MergeSort.h):
+    // Same algorithm Sebastian uses for resources. We only supply
+    // the "comes before" function for reservation dates.
+    mergeSort(sorted, n, reservationDateComesBefore);
+
+    cout << "\n----- Reservations sorted by date -----\n";
+    for (int i = 0; i < n; i++) {
+        sorted[i].display();
+    }
+    cout << "Total active reservations: " << n << endl;
+
+    delete[] sorted;
 }
 
 size_t ReservationManager::getReservationCount() const {

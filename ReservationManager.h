@@ -79,6 +79,13 @@ public:
 
     void displayActiveReservations() const;
 
+    // Copies the linked list into an array, then sorts that copy by
+    // reservation date using the team's merge sort (MergeSort.h).
+    // The original linked-list order is not changed.
+    //
+    // Time complexity: O(n log n)
+    void displayReservationsSortedByDate() const;
+
     std::size_t getReservationCount() const;
     int getNextReservationId() const;
 
