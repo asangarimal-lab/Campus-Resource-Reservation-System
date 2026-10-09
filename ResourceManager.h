@@ -26,6 +26,9 @@ public:
     bool isResourceAvailable(string resourceId);
 
     int getResourceCount();
+
+    // gives back the resource at this spot in the array (used by the reports)
+    Resource getResource(int index);
 };
 
 #endif
