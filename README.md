@@ -71,7 +71,8 @@ Needs `resources.txt` and `reservations.txt` in the same folder.
 9. Search reservation by ID
 10. Search reservations by student ID
 11. Display reservations sorted by date
-12. Exit
+12. Reports
+13. Exit
 
 ## Searching
 
@@ -101,6 +102,20 @@ ordered by date (MM/DD/YYYY converted to YYYYMMDD so the order is
 chronological). The original linked list stays in insert order.
 
 Time complexity: O(n log n)
+
+## Reporting
+
+The system provides an integrated reporting menu with:
+
+- Active reservation report
+- Resource utilization report
+- Most requested resources report
+- Waiting-list statistics
+
+The active reservation report uses the custom reservation linked list.
+Resource utilization and popularity information are generated from
+the reservation data maintained by the system. Waiting-list statistics
+are generated from the waiting-list data structure.
 
 ## File format
 
