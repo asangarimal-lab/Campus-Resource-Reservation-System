@@ -24,7 +24,9 @@ void showMenu() {
     cout << "10. Search reservations by student ID\n";
     cout << "11. Display reservations sorted by date\n";
     cout << "12. Reports\n";
-    cout << "13. Exit\n";
+    cout << "13. Display resources sorted by name\n";
+    cout << "14. Display resources sorted by popularity\n";
+    cout << "15. Exit\n";
     cout << "Choice: ";
 }
 
@@ -245,7 +247,7 @@ int main() {
     }
 
     int choice = 0;
-    while (choice != 13) {
+    while (choice != 15) {
         showMenu();
         cin >> choice;
 
@@ -292,7 +294,14 @@ int main() {
             case 12:
                 runReportsMenu(reports, reservations);
                 break;
+            // my merge sort, both sort a copy so the file order stays the same
             case 13:
+                resources.displaySortedByName();
+                break;
+            case 14:
+                reports.showResourcesByPopularity();
+                break;
+            case 15:
                 cout << "Goodbye.\n";
                 break;
             default:
