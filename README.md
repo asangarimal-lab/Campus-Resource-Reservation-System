@@ -72,7 +72,9 @@ Needs `resources.txt` and `reservations.txt` in the same folder.
 10. Search reservations by student ID
 11. Display reservations sorted by date
 12. Reports
-13. Exit
+13. Display resources sorted by name (merge sort)
+14. Display resources sorted by popularity (merge sort)
+15. Exit
 
 ## Searching
 
