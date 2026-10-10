@@ -60,15 +60,62 @@ Needs `resources.txt` and `reservations.txt` in the same folder.
 
 ## Menu
 
-1. Display active reservations (linked list)
-2. Create a reservation (unavailable / date conflict goes on the waiting-list queue)
-3. Cancel a reservation (pushes onto the cancellation stack)
-4. Display waiting list (queue)
-5. Undo last cancellation (pops the stack)
-6. Display cancellation history (stack)
+1. Display active reservations
+2. Create a reservation
+3. Cancel a reservation
+4. Display waiting list
+5. Undo last cancellation
+6. Display cancellation history
 7. Display all resources
 8. Check resource availability
-9. Exit
+9. Search reservation by ID
+10. Search reservations by student ID
+11. Display reservations sorted by date
+12. Reports
+13. Exit
+
+## Searching
+
+The final system uses a manually implemented Linear Search.
+
+Reservation search starts at the head of the active-reservation
+linked list and checks each node until the requested reservation
+ID is found or the end of the list is reached.
+
+The system also supports searching all active reservations
+associated with a particular student ID.
+
+No library search function is used.
+
+Time complexity:
+
+- Best case: O(1)
+- Worst case: O(n)
+
+## Sorting
+
+The team wrote one merge sort in `MergeSort.h` (no `std::sort`).
+
+Sebastian uses it to sort resources by name. Reservation sorting uses
+the same merge sort on a copy of the active-reservation linked list,
+ordered by date (MM/DD/YYYY converted to YYYYMMDD so the order is
+chronological). The original linked list stays in insert order.
+
+Time complexity: O(n log n)
+
+## Reporting
+
+The system provides an integrated reporting menu with:
+
+- Active reservation report
+- Resource utilization report
+- Most requested resources report
+- Waiting-list statistics
+
+The active reservation report uses the custom reservation linked list.
+Resource utilization and popularity information are generated from
+the reservation data maintained by the system. Waiting-list statistics
+are generated from the waiting-list data structure.
 
 ## File format
 

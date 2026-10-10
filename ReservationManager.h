@@ -58,7 +58,16 @@ public:
     bool isResourceReservedOnDate(const std::string& resourceId,
                                   const std::string& date) const;
 
+    // Performs a manual linear search through the linked list
+    // to locate a reservation by reservation ID.
+    //
+    // Best case: O(1)
+    // Worst case: O(n)
     const Reservation* findReservation(int reservationId) const;
+
+    // Performs a linear search through the active reservation list
+    // and displays all reservations belonging to one student.
+    void searchReservationsByStudentId(int studentId) const;
 
     // How many active reservations a resource has (used by the reports).
     int countReservationsForResource(const std::string& resourceId) const;
@@ -69,6 +78,16 @@ public:
                            Reservation& removedReservation);
 
     void displayActiveReservations() const;
+
+    // Active-reservations report for the Reports menu.
+    void displayActiveReservationsReport() const;
+
+    // Copies the linked list into an array, then sorts that copy by
+    // reservation date using the team's merge sort (MergeSort.h).
+    // The original linked-list order is not changed.
+    //
+    // Time complexity: O(n log n)
+    void displayReservationsSortedByDate() const;
 
     std::size_t getReservationCount() const;
     int getNextReservationId() const;
