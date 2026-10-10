@@ -137,3 +137,31 @@ void ReportManager::showResourcesByPopularity() {
              << " | Reservations: " << stats[i].reservations << endl;
     }
 }
+
+void ReportManager::showWaitingListStatistics() {
+    ResourceStats stats[MAX_STATS];
+    int count = buildStats(stats);
+
+    if (count == 0) {
+        cout << "No resources loaded." << endl;
+        return;
+    }
+
+    int totalWaiting = 0;
+    for (int i = 0; i < count; i++) {
+        totalWaiting += stats[i].waiting;
+    }
+
+    cout << "\n----- Waiting-List Statistics -----" << endl;
+    cout << left << setw(8) << "ID"
+         << setw(26) << "Name"
+         << "Students waiting" << endl;
+
+    for (int i = 0; i < count; i++) {
+        cout << left << setw(8) << stats[i].resourceId
+             << setw(26) << stats[i].name
+             << stats[i].waiting << endl;
+    }
+
+    cout << "Total students waiting: " << totalWaiting << endl;
+}

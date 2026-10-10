@@ -35,6 +35,9 @@ public:
     void showResourceUtilization();
     void showMostRequested();
     void showResourcesByPopularity();
+
+    // Uses the waiting counts already collected in buildStats.
+    void showWaitingListStatistics();
 };
 
 #endif

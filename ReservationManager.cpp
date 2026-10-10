@@ -390,7 +390,39 @@ void ReservationManager::displayActiveReservations() const {
     }
 
     cout << "Total active reservations: "
-         << reservationCount << endl;
+         << getReservationCount() << endl;
+}
+
+void ReservationManager::displayActiveReservationsReport() const {
+    cout << "\n===== Active Reservations Report =====\n\n";
+
+    if (head == NULL) {
+        cout << "No active reservations.\n";
+        cout << "\nTotal active reservations: "
+             << getReservationCount() << endl;
+        return;
+    }
+
+    Node* current = head;
+
+    while (current != NULL) {
+        cout << "Reservation ID: "
+             << current->data.getReservationId() << endl;
+        cout << "Student ID: "
+             << current->data.getStudentId() << endl;
+        cout << "Student: "
+             << current->data.getStudentName() << endl;
+        cout << "Resource: "
+             << current->data.getResourceId() << endl;
+        cout << "Date: "
+             << current->data.getDate() << endl;
+        cout << endl;
+
+        current = current->next;
+    }
+
+    cout << "Total active reservations: "
+         << getReservationCount() << endl;
 }
 
 // Turn MM/DD/YYYY into YYYYMMDD so 09/15/2026 comes before 10/01/2026.

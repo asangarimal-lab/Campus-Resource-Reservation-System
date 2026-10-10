@@ -79,6 +79,9 @@ public:
 
     void displayActiveReservations() const;
 
+    // Active-reservations report for the Reports menu.
+    void displayActiveReservationsReport() const;
+
     // Copies the linked list into an array, then sorts that copy by
     // reservation date using the team's merge sort (MergeSort.h).
     // The original linked-list order is not changed.

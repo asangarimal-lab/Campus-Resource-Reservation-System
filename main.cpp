@@ -4,6 +4,7 @@
 #include "ReservationManager.h"
 #include "WaitingQueue.h"
 #include "CancellationStack.h"
+#include "ReportManager.h"
 
 #include <iostream>
 #include <string>
@@ -22,7 +23,8 @@ void showMenu() {
     cout << "9. Search reservation by ID\n";
     cout << "10. Search reservations by student ID\n";
     cout << "11. Display reservations sorted by date\n";
-    cout << "12. Exit\n";
+    cout << "12. Reports\n";
+    cout << "13. Exit\n";
     cout << "Choice: ";
 }
 
@@ -162,6 +164,52 @@ void searchReservationsByStudent(
     reservations.searchReservationsByStudentId(studentId);
 }
 
+void showReportsMenu() {
+    cout << "\n===== System Reports =====\n";
+    cout << "1. Active reservations report\n";
+    cout << "2. Resource utilization report\n";
+    cout << "3. Most requested resources report\n";
+    cout << "4. Waiting-list statistics\n";
+    cout << "5. Return to main menu\n";
+    cout << "Choice: ";
+}
+
+void runReportsMenu(ReportManager& reports,
+                    ReservationManager& reservations) {
+    int reportChoice = 0;
+
+    while (reportChoice != 5) {
+        showReportsMenu();
+        cin >> reportChoice;
+
+        if (cin.fail()) {
+            clearBadInput();
+            cout << "Please enter a valid number.\n";
+            continue;
+        }
+
+        switch (reportChoice) {
+            case 1:
+                reservations.displayActiveReservationsReport();
+                break;
+            case 2:
+                reports.showResourceUtilization();
+                break;
+            case 3:
+                reports.showMostRequested();
+                break;
+            case 4:
+                reports.showWaitingListStatistics();
+                break;
+            case 5:
+                cout << "Returning to main menu.\n";
+                break;
+            default:
+                cout << "Invalid report option.\n";
+        }
+    }
+}
+
 void undoCancellation(ReservationManager& reservations,
                       CancellationStack& history) {
     if (history.isEmpty()) {
@@ -186,6 +234,7 @@ int main() {
     ReservationManager reservations;
     WaitingQueue waitingList;
     CancellationStack history;
+    ReportManager reports(resources, reservations, waitingList);
     string errorMessage;
 
     if (!resources.loadFromFile("resources.txt", errorMessage)) {
@@ -196,7 +245,7 @@ int main() {
     }
 
     int choice = 0;
-    while (choice != 12) {
+    while (choice != 13) {
         showMenu();
         cin >> choice;
 
@@ -241,6 +290,9 @@ int main() {
                 reservations.displayReservationsSortedByDate();
                 break;
             case 12:
+                runReportsMenu(reports, reservations);
+                break;
+            case 13:
                 cout << "Goodbye.\n";
                 break;
             default:
