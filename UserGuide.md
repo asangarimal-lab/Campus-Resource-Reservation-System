@@ -34,7 +34,7 @@ Type the number of an option and press Enter.
 | Option | What it does |
 |---|---|
 | 1 | Active reservations report |
-| 2 | Resource utilization (reservations per resource and share) |
+| 2 | Resource utilization (reservations per resource) |
 | 3 | Most requested resources (ranked by reservations + waiting) |
 | 4 | Waiting-list statistics |
 | 5 | Back to the main menu |

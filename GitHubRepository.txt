@@ -1,7 +1,7 @@
 Campus Resource Reservation System
 GitHub: https://github.com/asangarimal-lab/Campus-Resource-Reservation-System
 
-Milestone 1 (submission): milestone-1
+Final project (submission): final-project
 
 Person branches (this is where we commit):
 - asanga-rimal
