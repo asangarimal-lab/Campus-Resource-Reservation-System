@@ -24,6 +24,15 @@
 | No data files | Run without the .txt files, then 13, 14 | "No resources loaded." shown, no crash | Pass |
 | Bad menu input | Type abc, then 99 | Error shown, menu keeps running | Pass |
 
+## File load error handling
+
+| Test | Input/Action | Expected Result | Actual Result |
+|---|---|---|---|
+| Non-numeric reservation ID | Line `abc\|1001\|Alice Smith\|R101\|09/15/2026` | Line skipped; program starts; ID 0 is not inserted | Pass |
+| Non-numeric student ID | Line `301\|xyz\|Alice Smith\|R101\|09/15/2026` | Line skipped; program starts | Pass |
+| Impossible date | Line `301\|1001\|Alice Smith\|R101\|13/45/2026` | Line skipped; program starts | Pass |
+| Good records still load | Same file also has valid lines 301–320 | 20 active reservations; search 301 still finds Alice | Pass |
+
 ## Regression Tests
 
 | Test | Input/Action | Expected Result | Actual Result |

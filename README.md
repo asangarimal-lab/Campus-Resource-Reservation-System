@@ -52,7 +52,7 @@ make
 Without make:
 
 ```
-g++ -Wall -std=c++11 -o reservation_system main.cpp Resource.cpp ResourceManager.cpp Reservation.cpp ReservationManager.cpp WaitingQueue.cpp CancellationStack.cpp
+g++ -Wall -std=c++11 -o reservation_system main.cpp Resource.cpp ResourceManager.cpp Reservation.cpp ReservationManager.cpp WaitingQueue.cpp CancellationStack.cpp ReportManager.cpp
 ./reservation_system
 ```
 
@@ -134,6 +134,17 @@ R101|Study Room 101|Study Room|Available
 reservationId|studentId|studentName|resourceId|MM/DD/YYYY
 301|1001|Alice Smith|R101|09/15/2026
 ```
+
+Bad lines are skipped (the program still starts). Examples: a non-numeric ID,
+student ID `xyz`, or an impossible date like `13/45/2026`. Those records
+are not inserted as ID 0.
+
+## Error handling
+
+Menu input that is not a number is rejected and the menu stays up.
+Reservation create/cancel/search require numeric IDs. File load uses the
+same reservation field checks as create (positive IDs, name, resource,
+real MM/DD/YYYY date).
 
 ## Who wrote which files
 

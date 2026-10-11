@@ -205,6 +205,8 @@ bool ReservationManager::loadReservationsFromFile(
 
         int reservationId = 0;
         int studentId = 0;
+        string extraId;
+        string extraStudentId;
 
         stringstream idStream(idText);
         stringstream studentStream(studentIdText);
@@ -212,15 +214,34 @@ bool ReservationManager::loadReservationsFromFile(
         idStream >> reservationId;
         studentStream >> studentId;
 
-        insertNode(
-            Reservation(
-                reservationId,
-                studentId,
-                name,
-                resourceId,
-                date
-            )
+        // "abc" stays 0. "301abc" would parse as 301, so leftover
+        // text is treated as invalid and forced to 0.
+        if (idStream.fail() || (idStream >> extraId)) {
+            reservationId = 0;
+        }
+        if (studentStream.fail() || (studentStream >> extraStudentId)) {
+            studentId = 0;
+        }
+
+        Reservation reservation(
+            reservationId,
+            studentId,
+            name,
+            resourceId,
+            date
         );
+
+        string lineError;
+        if (!validateBasicFields(reservation, lineError)) {
+            cout << "Skipping bad reservation line "
+                 << lineNumber
+                 << ": "
+                 << lineError
+                 << endl;
+            continue;
+        }
+
+        insertNode(reservation);
     }
 
     inFile.close();

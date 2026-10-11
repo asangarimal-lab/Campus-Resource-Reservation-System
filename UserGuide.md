@@ -59,6 +59,19 @@ R105 | Study Room 105 | Reservations: 3
 R111 | Graphing Calculator Set | Reservations: 2
 ```
 
+## If a reservation file line is bad
+
+The program still starts. It prints that the line was skipped and why.
+Those records are not loaded.
+
+Examples that get skipped:
+
+```
+abc|1001|Alice Smith|R101|09/15/2026
+301|xyz|Alice Smith|R101|09/15/2026
+301|1001|Alice Smith|R101|13/45/2026
+```
+
 ## Tips
 
 - IDs are case sensitive

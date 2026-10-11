@@ -62,31 +62,16 @@ void ReportManager::showResourceUtilization() {
         return;
     }
 
-    int totalReservations = 0;
+    cout << "\n===== Resource Utilization Report =====\n" << endl;
+
+    // Every resource from ResourceManager is listed, including those
+    // with 0 reservations. Counts come from the linked list, not
+    // hard-coded IDs.
     for (int i = 0; i < count; i++) {
-        totalReservations += stats[i].reservations;
+        cout << stats[i].resourceId << " - " << stats[i].name << endl;
+        cout << "Reservations: " << stats[i].reservations << endl;
+        cout << endl;
     }
-
-    cout << "\n----- Resource Utilization Report -----" << endl;
-    cout << left << setw(8) << "ID"
-         << setw(26) << "Name"
-         << setw(14) << "Reservations"
-         << "Share" << endl;
-
-    for (int i = 0; i < count; i++) {
-        // share of all reservations, avoid dividing by 0
-        double share = 0.0;
-        if (totalReservations > 0) {
-            share = 100.0 * stats[i].reservations / totalReservations;
-        }
-
-        cout << left << setw(8) << stats[i].resourceId
-             << setw(26) << stats[i].name
-             << setw(14) << stats[i].reservations
-             << fixed << setprecision(1) << share << "%" << endl;
-    }
-
-    cout << "Total reservations: " << totalReservations << endl;
 }
 
 // resources ranked by reservations + students waiting
@@ -147,21 +132,13 @@ void ReportManager::showWaitingListStatistics() {
         return;
     }
 
-    int totalWaiting = 0;
+    cout << "\n===== Waiting-List Statistics =====\n" << endl;
+
+    // Every resource is listed, including those with 0 waiting students.
+    // Counts come from walking the queue for that resource ID.
     for (int i = 0; i < count; i++) {
-        totalWaiting += stats[i].waiting;
+        cout << stats[i].resourceId << " - " << stats[i].name << endl;
+        cout << "Students waiting: " << stats[i].waiting << endl;
+        cout << endl;
     }
-
-    cout << "\n----- Waiting-List Statistics -----" << endl;
-    cout << left << setw(8) << "ID"
-         << setw(26) << "Name"
-         << "Students waiting" << endl;
-
-    for (int i = 0; i < count; i++) {
-        cout << left << setw(8) << stats[i].resourceId
-             << setw(26) << stats[i].name
-             << stats[i].waiting << endl;
-    }
-
-    cout << "Total students waiting: " << totalWaiting << endl;
 }
