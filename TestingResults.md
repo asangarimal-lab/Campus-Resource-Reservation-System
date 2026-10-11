@@ -12,6 +12,18 @@
 | Return from reports | Select Return to main menu | Goes back to the main menu | Pass |
 | Waiting list after enqueue | Add a student to R115 wait list, then waiting-list report | R115 shows 1 student waiting | Pass |
 
+## Sorting Tests
+
+| Test | Input/Action | Expected Result | Actual Result |
+|---|---|---|---|
+| Sort by name | Main menu 13 | Resources listed A to Z | Pass |
+| Sort by popularity (ties) | Main menu 14 | Ties listed A to Z | Pass |
+| Popularity after new reservation | Reserve R105, then 14 | R105 moves to top | Pass |
+| Popularity after cancel | Cancel 307, then 14 | R113 moves to bottom | Pass |
+| Most requested after new reservation | Reserve R105, then Reports > 3 | R105 ranked 1 | Pass |
+| No data files | Run without the .txt files, then 13, 14 | "No resources loaded." shown, no crash | Pass |
+| Bad menu input | Type abc, then 99 | Error shown, menu keeps running | Pass |
+
 ## Regression Tests
 
 | Test | Input/Action | Expected Result | Actual Result |
