@@ -1,4 +1,4 @@
-# Project 1 Testing Results
+# Final Project Testing Results
 
 ## Reporting Tests
 
@@ -32,6 +32,32 @@
 | Non-numeric student ID | Line `301\|xyz\|Alice Smith\|R101\|09/15/2026` | Line skipped; program starts | Pass |
 | Impossible date | Line `301\|1001\|Alice Smith\|R101\|13/45/2026` | Line skipped; program starts | Pass |
 | Good records still load | Same file also has valid lines 301–320 | 20 active reservations; search 301 still finds Alice | Pass |
+
+## Search Tests
+
+| Test | Input/Action | Expected Result | Actual Result |
+|---|---|---|---|
+| Reservation ID not found | Main menu 9, ID 9999 | "No reservation found with that ID." | Pass |
+| Non-numeric reservation ID | Main menu 9, abc | "Reservation ID has to be a number." | Pass |
+| Student with no reservations | Main menu 10, ID 5555 | "No active reservations found for this student." | Pass |
+
+## Create, Cancel and Undo Tests
+
+| Test | Input/Action | Expected Result | Actual Result |
+|---|---|---|---|
+| Resource already booked that date | Reserve R101 on 09/15/2026 | Student added to the waiting list | Pass |
+| Impossible date | Reserve R101 on 13/45/2026 | "Date must be a real date in MM/DD/YYYY format." | Pass |
+| Resource does not exist | Reserve R999 | "No resource with that ID." | Pass |
+| Cancel ID not found | Main menu 3, ID 9999 | "No reservation found with that ID." | Pass |
+| Undo with nothing to undo | Main menu 5 | "Cancellation stack is empty. Nothing to undo." | Pass |
+| Cancel then undo | Cancel 301, undo, search 301 | 301 is back on the active list | Pass |
+
+## Availability Tests
+
+| Test | Input/Action | Expected Result | Actual Result |
+|---|---|---|---|
+| Unavailable resource | Main menu 8, R115 | "R115 (Physics Lab Kit) is Unavailable" | Pass |
+| Resource does not exist | Main menu 8, R999 | "No resource with that ID." | Pass |
 
 ## Regression Tests
 
