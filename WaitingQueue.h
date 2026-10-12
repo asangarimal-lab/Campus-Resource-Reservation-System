@@ -4,13 +4,20 @@
 #include <string>
 using namespace std;
 
-// Queue used to keep track of students waiting for a resource
+struct WaitingRequest {
+    int studentId;
+    string studentName;
+    string resourceId;
+    string date;
+};
+
 class WaitingQueue {
 private:
     struct Node {
         int studentId;
         string studentName;
         string resourceId;
+        string date;
         Node* next;
     };
 
@@ -21,13 +28,23 @@ public:
     WaitingQueue();
     ~WaitingQueue();
 
-    bool isEmpty() const;
+    WaitingQueue(const WaitingQueue&) = delete;
+    WaitingQueue& operator=(const WaitingQueue&) = delete;
 
-    void enqueue(int studentId, string studentName, string resourceId);
+    bool isEmpty() const;
+    int size() const;
+
+    void enqueue(int studentId, string studentName,
+                 string resourceId, string date);
+
+    bool peekForResource(string resourceId, string date,
+                         WaitingRequest& request) const;
+
+    bool dequeueForResource(string resourceId, string date,
+                            WaitingRequest& request);
+
     void dequeue();
     void displayWaitingList() const;
-
-    // How many students are waiting for this resource (used by the reports)
     int countForResource(string resourceId) const;
 };
 

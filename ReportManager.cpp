@@ -11,6 +11,7 @@ bool morePopular(const ResourceStats& a, const ResourceStats& b) {
     if (a.reservations != b.reservations) {
         return a.reservations > b.reservations;
     }
+
     return a.name < b.name;
 }
 
@@ -22,6 +23,7 @@ bool moreRequested(const ResourceStats& a, const ResourceStats& b) {
     if (totalA != totalB) {
         return totalA > totalB;
     }
+
     return a.name < b.name;
 }
 
@@ -35,6 +37,7 @@ ReportManager::ReportManager(ResourceManager& resources,
 // fills the array with the numbers for every resource, returns how many
 int ReportManager::buildStats(ResourceStats stats[]) {
     int count = resources.getResourceCount();
+
     if (count > MAX_STATS) {
         count = MAX_STATS;
     }
@@ -44,9 +47,12 @@ int ReportManager::buildStats(ResourceStats stats[]) {
 
         stats[i].resourceId = r.getResourceId();
         stats[i].name = r.getName();
+
         stats[i].reservations =
             reservations.countReservationsForResource(r.getResourceId());
-        stats[i].waiting = waitingList.countForResource(r.getResourceId());
+
+        stats[i].waiting =
+            waitingList.countForResource(r.getResourceId());
     }
 
     return count;
@@ -117,6 +123,7 @@ void ReportManager::showResourcesByPopularity() {
     mergeSort(stats, count, morePopular);
 
     cout << "\n----- Resources (sorted by popularity) -----" << endl;
+
     for (int i = 0; i < count; i++) {
         cout << stats[i].resourceId << " | " << stats[i].name
              << " | Reservations: " << stats[i].reservations << endl;
@@ -136,9 +143,26 @@ void ReportManager::showWaitingListStatistics() {
 
     // Every resource is listed, including those with 0 waiting students.
     // Counts come from walking the queue for that resource ID.
+    int longest = -1;
+
     for (int i = 0; i < count; i++) {
         cout << stats[i].resourceId << " - " << stats[i].name << endl;
         cout << "Students waiting: " << stats[i].waiting << endl;
         cout << endl;
+
+        if (stats[i].waiting > 0 &&
+            (longest == -1 || stats[i].waiting > stats[longest].waiting)) {
+            longest = i;
+        }
+    }
+
+    if (longest == -1) {
+        cout << "The waiting list is empty." << endl;
+    }
+    else {
+        cout << "Longest waiting list: " << stats[longest].resourceId
+             << " (" << stats[longest].waiting
+             << (stats[longest].waiting == 1 ? " student)" : " students)")
+             << endl;
     }
 }

@@ -65,11 +65,13 @@ void createReservation(ResourceManager& resources,
 
     cout << "Student ID: ";
     cin >> studentId;
+
     if (cin.fail()) {
         clearBadInput();
         cout << "Student ID has to be a number.\n";
         return;
     }
+
     cin.ignore();
 
     cout << "Student name: ";
@@ -84,14 +86,17 @@ void createReservation(ResourceManager& resources,
         reservations.isResourceReservedOnDate(resourceId, date)) {
         cout << resourceId << " is not available for that date.\n";
         cout << "Adding the student to the waiting list queue.\n";
-        waitingList.enqueue(studentId, studentName, resourceId);
+        waitingList.enqueue(studentId, studentName, resourceId, date);
         return;
     }
 
     int newId = reservations.getNextReservationId();
-    Reservation reservation(newId, studentId, studentName, resourceId, date);
+
+    Reservation reservation(
+        newId, studentId, studentName, resourceId, date);
 
     string errorMessage;
+
     if (reservations.createReservation(reservation, errorMessage)) {
         cout << "Reservation created. ID is " << newId << ".\n";
     }
@@ -100,11 +105,15 @@ void createReservation(ResourceManager& resources,
     }
 }
 
-void cancelReservation(ReservationManager& reservations,
-                       CancellationStack& history) {
+void cancelReservation(ResourceManager& resources,
+                       ReservationManager& reservations,
+                       CancellationStack& history,
+                       WaitingQueue& waitingList) {
     int reservationId;
+
     cout << "Reservation ID to cancel: ";
     cin >> reservationId;
+
     if (cin.fail()) {
         clearBadInput();
         cout << "Reservation ID has to be a number.\n";
@@ -113,10 +122,38 @@ void cancelReservation(ReservationManager& reservations,
 
     Reservation cancelled;
     string message;
+
     if (reservations.cancelReservation(reservationId, cancelled, message)) {
         cout << message << endl;
+
         // Stack connection: cancelled record is pushed so undo can pop it.
         history.push(cancelled);
+
+        WaitingRequest request;
+
+        if (resources.isResourceAvailable(cancelled.getResourceId()) &&
+            waitingList.peekForResource(cancelled.getResourceId(),
+                                        cancelled.getDate(), request)) {
+            int newId = reservations.getNextReservationId();
+
+            Reservation reservation(
+                newId, request.studentId, request.studentName,
+                request.resourceId, request.date);
+
+            // Keep the student's place if reservation creation fails.
+            if (reservations.createReservation(reservation, message)) {
+                waitingList.dequeueForResource(
+                    request.resourceId, request.date, request);
+
+                cout << "Reservation automatically assigned to "
+                     << request.studentName
+                     << ". ID is " << newId << ".\n";
+            }
+            else {
+                cout << "Couldn't assign the waiting student: "
+                     << message << endl;
+            }
+        }
     }
     else {
         cout << message << endl;
@@ -221,12 +258,15 @@ void undoCancellation(ReservationManager& reservations,
 
     Reservation restored = history.pop();
     string errorMessage;
+
     if (reservations.restoreReservation(restored, errorMessage)) {
         cout << "Reservation " << restored.getReservationId()
              << " was put back on the active list.\n";
     }
     else {
-        cout << "Couldn't restore that reservation: " << errorMessage << endl;
+        cout << "Couldn't restore that reservation: "
+             << errorMessage << endl;
+
         history.push(restored);
     }
 }
@@ -242,11 +282,14 @@ int main() {
     if (!resources.loadFromFile("resources.txt", errorMessage)) {
         cout << errorMessage << endl;
     }
-    if (!reservations.loadReservationsFromFile("reservations.txt", errorMessage)) {
+
+    if (!reservations.loadReservationsFromFile(
+            "reservations.txt", errorMessage)) {
         cout << errorMessage << endl;
     }
 
     int choice = 0;
+
     while (choice != 15) {
         showMenu();
         cin >> choice;
@@ -265,7 +308,8 @@ int main() {
                 createReservation(resources, reservations, waitingList);
                 break;
             case 3:
-                cancelReservation(reservations, history);
+                cancelReservation(
+                    resources, reservations, history, waitingList);
                 break;
             case 4:
                 waitingList.displayWaitingList();
