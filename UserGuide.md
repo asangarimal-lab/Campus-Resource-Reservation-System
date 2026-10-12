@@ -45,18 +45,18 @@ Option 13:
 
 ```
 ----- Resources (sorted by name) -----
-Resource ID: R113 | Name: Chemistry Lab Kit | Type: Lab Equipment | Status: Available
-Resource ID: R111 | Name: Graphing Calculator Set | Type: Calculator | Status: Available
+Resource ID: R111 | Name: 3D Printer | Type: Lab Equipment | Status: Available
+Resource ID: R113 | Name: Arduino Kit | Type: Lab Equipment | Status: Available
 
-Total: 10
+Total: 20
 ```
 
 Option 14 (after reserving R105):
 
 ```
 ----- Resources (sorted by popularity)
-R105 | Study Room 105 | Reservations: 3
-R111 | Graphing Calculator Set | Reservations: 2
+R105 | Laptop 01 | Reservations: 3
+R111 | 3D Printer | Reservations: 2
 ```
 
 ## If a reservation file line is bad

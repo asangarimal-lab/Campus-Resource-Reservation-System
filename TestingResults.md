@@ -19,7 +19,7 @@
 | Sort by name | Main menu 13 | Resources listed A to Z | Pass |
 | Sort by popularity (ties) | Main menu 14 | Ties listed A to Z | Pass |
 | Popularity after new reservation | Reserve R105, then 14 | R105 moves to top | Pass |
-| Popularity after cancel | Cancel 307, then 14 | R113 moves to bottom | Pass |
+| Popularity after cancel | Cancel 307, then 14 | R113 drops below the resources with 2 reservations | Pass |
 | Most requested after new reservation | Reserve R105, then Reports > 3 | R105 ranked 1 | Pass |
 | No data files | Run without the .txt files, then 13, 14 | "No resources loaded." shown, no crash | Pass |
 | Bad menu input | Type abc, then 99 | Error shown, menu keeps running | Pass |
@@ -56,7 +56,7 @@
 
 | Test | Input/Action | Expected Result | Actual Result |
 |---|---|---|---|
-| Unavailable resource | Main menu 8, R115 | "R115 (Physics Lab Kit) is Unavailable" | Pass |
+| Unavailable resource | Main menu 8, R115 | "R115 (CS Tutoring) is Unavailable" | Pass |
 | Resource does not exist | Main menu 8, R999 | "No resource with that ID." | Pass |
 
 ## Regression Tests
